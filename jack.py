@@ -57,40 +57,53 @@ class Jack(Cmd):
     """Commandline interpreter to access various tools
 
     """
-    Cmd.prompt = "jack:: "
 
-    def do_speak(self, *args):
+    def __init__(self):
+        Cmd.__init__(self)
+        self.prompt = "jack:: "
+
+    def do_speak(self, line):
         """Tell me what you do"""
         msg = "This is what I can do.\n"
         sys.stdout.write(msg)
 
     def do_fetch(self, line):
         """move to fetch subcommand"""
-        self.fetch_app = Fetch()
+        self.fetch_app = Fetch(self)
         self.fetch_app.cmdloop()
 
 class Fetch(Cmd):
     """Find, check and move winfates result files"""
 
-    Cmd.Prompt = "jack:fetch:: "
+    def __init__(self, parent):
+        Cmd.__init__(self)
+        self.parent = parent
+        self.prompt = self.parent.prompt[:-2] + "fetch:: "
+        self.record = new_fetch_record()
 
     def do_find(self, line):
         """move to find subcommand"""
-        self.find_app = Find()
+        self.find_app = Find(self)
         self.find_app.cmdloop()
         print(self.find_app.record)
+        self.record = self.find_app.record
 
 class Find(Cmd):
     """Find winfates results files"""
-    Cmd.prompt = "jack:fetch:find:: "
-    machines = []
-    project = ""
+
     LOCDATA_DRIVES = ['e$', 'c$', 'k$']
     EXTENSIONS = set(""".ac3 .bys .clc .err .hc3 .hd3 .ht3 .if3 .in3 .jur
         .log .lu3 .mmb .prf .sc3 .sf3 .sfa .shr .slk .sp3 .ss3 .tr3 .tsd .tu3 .wth""".split())
-    locdata_dirs = []
-    project_dirs = []
-    record = new_fetch_record()
+
+    def __init__(self, parent):
+        Cmd.__init__(self)
+        self.parent = parent
+        self.prompt = self.parent.prompt[:-2] + "find:: "
+        self.machines = []
+        self.project = ""
+        self.locdata_dirs = []
+        self.project_dirs = []
+        self.record = self.parent.record
 
     def _has_locdata(self, machines):
         """Check if the machines have a loc_data directory"""
