@@ -132,6 +132,16 @@ class Find(Cmd):
         self._has_locdata()
         self._has_project()
 
+    def _update(self):
+        """Export state to fetch record"""
+        self.record['header'].update({'paths'   : self.project_dirs,
+                                      'patterns': self.patterns})
+        self.record['body'].update({'files': self.files})
+
+    def do_export(self, line):
+        """Return the fetch record to jack:fetch and quit"""
+        return self.record
+
     def do_machines(self, line):
         """Display and set the machines to search within"""
         if line:
@@ -165,6 +175,9 @@ class Find(Cmd):
             self.files = self._has_results()
             self._display_files()
 
+    def do_update(self, line):
+        """Update the fetch record to reflect settings"""
+        self._update()
 
 ### Functions
 def jprint(msg):
