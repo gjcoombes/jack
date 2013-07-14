@@ -159,6 +159,11 @@ class Find(Cmd):
                 print(f)
 
 ### Functions
+def jprint(msg):
+#    sys.stdout.write("{}\n".format(msg))
+    pprint(msg)
+
+
 
 if __name__ == "__main__":
 
