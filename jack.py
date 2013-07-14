@@ -35,7 +35,7 @@ def new_fetch_record():
         patterns: List of patterns to apply
         match_type: glob or regex
         clobber: Overwrite files? default: True
-        cleanup: Delete fiels after they are moved? default - False for the moment
+        cleanup: Delete files after they are moved? default - False for the moment
     body: The payload to be executed or fetched
         dest_dir: The directory to move files to
         files:
