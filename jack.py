@@ -70,7 +70,8 @@ class Find(Cmd):
     machines = []
     project = ""
     LOCDATA_DRIVES = ['e$', 'c$', 'k$']
-    RESULT_EXTENSIONS = [".tr3", ".err"]
+    EXTENSIONS = set(""".ac3 .bys .clc .err .hc3 .hd3 .ht3 .if3 .in3 .jur
+        .log .lu3 .mmb .prf .sc3 .sf3 .sfa .shr .slk .sp3 .ss3 .tr3 .tsd .tu3 .wth""".split())
     locdata_dirs = []
     project_dirs = []
     record = new_fetch_record()
@@ -105,7 +106,8 @@ class Find(Cmd):
         results = []
         for d in self.project_dirs:
             for p in self.patterns:
-                files = [ osp.join(d, f) for f in fnfilter(os.listdir(d), p) ]
+                files = [ osp.join(d, f) for f in fnfilter(os.listdir(d), p)
+                          if osp.splitext(f)[1].lower() in self.EXTENSIONS ]
                 results.extend(files)
         return results
 
