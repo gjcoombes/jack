@@ -111,15 +111,21 @@ class Find(Cmd):
                 results.extend(files)
         return results
 
+    def _display_files(self):
+        """Show user the files that have been found"""
+        jprint("Files found were:\n")
+        for f in self.files:
+            print(f)
+
     def _display_locdatas(self):
         """Show the locdatas found on machines"""
-        print("Loc_data_dirs found at:")
+        jprint("Loc_data_dirs found at:")
         for d in self.locdata_dirs:
             print(d)
 
     def _display_state(self):
         self._display_locdatas()
-        self._display
+        self._display_files()
 
     def _refresh(self):
         """Update state"""
@@ -157,8 +163,8 @@ class Find(Cmd):
             jprint(self.patterns)
         if self.patterns:
             self.files = self._has_results()
-            for f in self.files:
-                print(f)
+            self._display_files()
+
 
 ### Functions
 def jprint(msg):
@@ -169,7 +175,7 @@ def jprint(msg):
 
 if __name__ == "__main__":
 
-    app = Jack()
+    app = Find()
     app.cmdloop()
 
 
