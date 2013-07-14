@@ -57,12 +57,28 @@ class Jack(Cmd):
     """Commandline interpreter to access various tools
 
     """
-    Cmd.prompt = "Jack says:"
+    Cmd.prompt = "jack:: "
 
     def do_speak(self, *args):
         """Tell me what you do"""
         msg = "This is what I can do.\n"
         sys.stdout.write(msg)
+
+    def do_fetch(self, line):
+        """move to fetch subcommand"""
+        self.fetch_app = Fetch()
+        self.fetch_app.cmdloop()
+
+class Fetch(Cmd):
+    """Find, check and move winfates result files"""
+
+    Cmd.Prompt = "jack:fetch:: "
+
+    def do_find(self, line):
+        """move to find subcommand"""
+        self.find_app = Find()
+        self.find_app.cmdloop()
+        print(self.find_app.record)
 
 class Find(Cmd):
     """Find winfates results files"""
@@ -188,7 +204,7 @@ def jprint(msg):
 
 if __name__ == "__main__":
 
-    app = Find()
+    app = Jack()
     app.cmdloop()
 
 
